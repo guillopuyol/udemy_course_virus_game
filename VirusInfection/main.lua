@@ -7,19 +7,15 @@
 -- Your code here
 
 
+virus = {["Life"]=10, ["Speed"]=30}
 
---message = "Hello World"
---
---print(message)
---
---message2 = ", Good Day!"
---
---print(message..message2)
+print(virus["Life"])
 
-virusLife = 0
+virus.Speed = virus.Speed + 10
 
-print("Virus Life: "..virusLife)
+print(virus.Speed)
 
-virusLife = virusLife + 10
+virus.Name = "Cool Virus"
 
-print("Virus Life: "..virusLife)
+
+print("My name is: "..virus.Name)
