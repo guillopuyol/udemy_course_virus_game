@@ -30,8 +30,8 @@ virusColony[4]=virus4
 
 
 
-while virusColony[1].Life<=31 do
 
+repeat
     if virusColony[1].Life > 30 then
         print("Virus Died!")
     elseif virusColony[1].Life == 30 then
@@ -44,4 +44,11 @@ while virusColony[1].Life<=31 do
     
     virusColony[1].Life = virusColony[1].Life + 1
     print("Virus Age: "..virusColony[1].Life)
-end
+    
+until virusColony[1].Life>=31
+
+--while virusColony[1].Life<=31 do    
+--end
+
+
+print("Code ENDED!")
