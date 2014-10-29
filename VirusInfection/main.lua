@@ -29,26 +29,29 @@ virusColony[3]=virus2
 virusColony[4]=virus4
 
 
-
-
-repeat
-    if virusColony[1].Life > 30 then
-        print("Virus Died!")
-    elseif virusColony[1].Life == 30 then
-        print("Virus is about to die!")
-    elseif virusColony[1].Life >= 25 and virusColony[1].Life <= 30 then
-        print("Virus is getting old!")
-    else
-        print("Virus is in good health.")
-    end
+for i=1,#virusColony do
     
-    virusColony[1].Life = virusColony[1].Life + 1
-    print("Virus Age: "..virusColony[1].Life)
+    print("We're now checking the "..virusColony[i].Color.." virus")
     
-until virusColony[1].Life>=31
+    repeat
+         if virusColony[i].Life > 30 then
+             print("Virus Died!")
+         elseif virusColony[i].Life == 30 then
+             print("Virus is about to die!")
+         elseif virusColony[i].Life >= 25 and virusColony[i].Life <= 30 then
+             print("Virus is getting old!")
+         else
+             print("Virus is in good health.")
+         end
 
---while virusColony[1].Life<=31 do    
---end
+         virusColony[i].Life = virusColony[i].Life + 1
+         print("Virus Age: "..virusColony[i].Life)
+
+     until virusColony[i].Life>=32 
+end
+
+
+
 
 
 print("Code ENDED!")
