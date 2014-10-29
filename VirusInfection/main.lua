@@ -1,4 +1,4 @@
------------------------------------------------------------------------------------------
+require "CiderDebugger";-----------------------------------------------------------------------------------------
 --
 -- main.lua
 --
@@ -30,3 +30,16 @@ virusColony[4]=virus4
 
 
 print(virusColony[3].Color)
+
+virusColony[1].Life = 26
+
+
+if virusColony[1].Life > 30 then
+    print("Virus Died!")
+elseif virusColony[1].Life == 30 then
+    print("Virus is about to die!")
+elseif virusColony[1].Life >= 25 and virusColony[1].Life <= 30 then
+    print("Virus is getting old!")
+else
+    print("Virus is in good health.")
+end
