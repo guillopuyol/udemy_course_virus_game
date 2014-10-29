@@ -53,5 +53,13 @@ end
 
 
 
+--Printing Virus Colony
+print(virusColony)
 
-print("Code ENDED!")
+for key,value in pairs(virusColony) do
+    print(key,value)
+    
+    for insideKey,insideValue in pairs(value) do
+        print(insideKey, insideValue)
+    end
+end
