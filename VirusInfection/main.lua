@@ -98,6 +98,13 @@ local virusColony={}
 local gameVars = {}
 
 gameVars.totalVirusesOnScreen = 0
+gameVars.maxVirusOnScreen = 20
+
+local function endGame(endGameStatus)
+    if endGameStatus=="Lost" then
+        print("Game OVER, Too Many Viruses On The Screen")
+    end
+end
 
 local function createVirus(params)
     
@@ -200,6 +207,14 @@ local function createVirus(params)
     return virus
 end
 
+local function checkTotalVirus()
+    if gameVars.totalVirusesOnScreen>gameVars.maxVirusOnScreen then
+        local endGameStatus = "Lost"
+        endGame(endGameStatus)
+    end
+end
+
+
 local function drawLevel(level)
     
     local level = level or 1
@@ -265,6 +280,8 @@ local function drawLevel(level)
                         gameVars.totalVirusesOnScreen = gameVars.totalVirusesOnScreen + 1
 
                         table.insert(virusColony, thisVirus )
+                        
+                        checkTotalVirus()
 
 
                     end
@@ -280,6 +297,9 @@ local function drawLevel(level)
             gameVars.totalVirusesOnScreen = gameVars.totalVirusesOnScreen + 1
             
             table.insert(virusColony, thisVirus )
+            
+            checkTotalVirus()
+            
         end
         
     end
