@@ -111,6 +111,32 @@ local function createVirus(params)
     virus.x = params.x or display.contentWidth/2
     virus.y = params.y or display.contentHeight/2
     
+    virus.speed = params.speed or 50
+    
+    
+    function virus.move()
+        
+        local random = math.random
+        local sqrt = math.sqrt
+        
+        local minX, maxX, minY, maxY = 10+virus.width/2, 310-virus.width/2, 60+virus.height/2, 470-virus.height/2
+        
+        local currentX, currentY = virus.x, virus.y
+        
+        local targetX= random(minX, maxX)
+        
+        local targetY= random(minY, maxY)
+        
+        local distance=sqrt((targetY-currentY)^2+(targetX-currentX)^2)
+        
+        local transitionTime = distance/virus.speed * 1000
+ 
+        
+        transition.to( virus, {time=transitionTime, alpha=1, x=targetX, y=targetY, onComplete=virus.move } )
+    end
+    
+    virus.move()
+    
     return virus
 end
 
@@ -126,7 +152,7 @@ local function initScreen()
     background.x = contentWidth/2
     background.y = contentHeight/2
     
-    local params = {["group"]=screen, ["color"]="Blue", ["x"]=200, ["y"]=70}
+    local params = {["group"]=screen, ["color"]="Blue", ["x"]=200, ["y"]=70, ["speed"]=50}
     
     table.insert(virusColony, createVirus(params) )
     
