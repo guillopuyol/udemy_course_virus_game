@@ -96,15 +96,20 @@ local screen
 local virusColony={}
 
 
-local function createVirus(group, color)
+local function createVirus(params)
     
-    local color = color or "Red"
+    local params = params
+    
+
+    
+    local group = params.group or screen
+    local color = params.color or "Red"
     
     local virus = display.newImageRect( group, "/Images/"..color.."Virus@2x.png", 64, 64 )
  
 
-    virus.x = 160
-    virus.y = 240
+    virus.x = params.x or display.contentWidth/2
+    virus.y = params.y or display.contentHeight/2
     
     return virus
 end
@@ -114,12 +119,19 @@ local function initScreen()
     
     screen = display.newGroup()
     
-    table.insert(virusColony, createVirus(screen) )
+    local contentWidth = display.contentWidth
+    local contentHeight = display.contentHeight
+    
+    local background = display.newImageRect(screen, "/Images/background@2x.png", contentWidth, contentHeight )
+    background.x = contentWidth/2
+    background.y = contentHeight/2
+    
+    local params = {["group"]=screen, ["color"]="Blue", ["x"]=200, ["y"]=70}
+    
+    table.insert(virusColony, createVirus(params) )
     
     
     
 end
 
 initScreen()
-
-virusColony[1].y = 470
