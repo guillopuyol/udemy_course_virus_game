@@ -103,6 +103,26 @@ gameVars.maxVirusOnScreen = 20
 local function endGame(endGameStatus)
     if endGameStatus=="Lost" then
         print("Game OVER, Too Many Viruses On The Screen")
+        
+        
+        
+        for i = 1, #virusColony do
+            
+--            for i,j in pairs(virusColony) do print(i,j) end
+
+            local thisVirus = virusColony[i]
+            
+            if thisVirus~= nil then
+                
+                thisVirus:stopGrowing()
+                thisVirus:stopMoving()
+                thisVirus:stopRespondingToTouch()
+            end 
+        end
+        
+--        virus:stopMoving()
+--        virus:stopGrowing()
+        
     end
 end
 
@@ -174,27 +194,28 @@ local function createVirus(params)
     virus.growTimer = timer.performWithDelay(5000, virus.grow, 2)
     
     
+    function virus:stopGrowing()
+        timer.cancel(virus.growTimer)
+    end
+    
+    function virus:stopMoving()
+        transition.cancel(virus.transition)
+    end
+    
+    function virus:stopRespondingToTouch()
+        virus:removeEventListener("touch", virus)
+    end
+    
     function virus:touch(event)
         
         if event.phase=="ended" then
             
-            if virus.age==0 then
-                --die
+                virus:stopGrowing()
+                virus:stopMoving()
                 
-                timer.cancel(virus.growTimer)
-                transition.cancel(virus.transition)
                 local event = {name="virusDied", target=virus}
                 virus:dispatchEvent(event)
                 
-            else
-                --spawn new viruses
-                
-                timer.cancel(virus.growTimer)
-                transition.cancel(virus.transition)
-                local event = {name="virusDied", target=virus}
-                virus:dispatchEvent(event)
-            end
-            
         end
         
         return true
