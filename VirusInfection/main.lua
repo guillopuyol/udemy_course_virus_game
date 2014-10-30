@@ -221,7 +221,7 @@ local function drawLevel(level)
     
     for virusTypes = 1, 3 do
         
-        print(levels[level][virusTypes])
+--        print(levels[level][virusTypes])
         
         local virusToSpawn = levels[level][virusTypes]
         
@@ -233,9 +233,9 @@ local function drawLevel(level)
             
             local function killOffVirus(event)
                 
-                print("We just heard a virus died!")
-                print("Before:")
-                for i,j in pairs(virusColony) do print(i,j) end
+--                print("We just heard a virus died!")
+--                print("Before:")
+--                for i,j in pairs(virusColony) do print(i,j) end
                 
                 local copyOfVirus = event.target
                 
@@ -246,8 +246,8 @@ local function drawLevel(level)
                 virusColony[thisVirusIndex] = nil
                 
                 
-                print("After:")
-                for i,j in pairs(virusColony) do print(i,j) end
+--                print("After:")
+--                for i,j in pairs(virusColony) do print(i,j) end
                 
                 gameVars.totalVirusesOnScreen = gameVars.totalVirusesOnScreen -1
                 
