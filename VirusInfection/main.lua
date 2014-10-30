@@ -1,4 +1,4 @@
--------------------------------------------------------------------------------------------
+require "CiderDebugger";-------------------------------------------------------------------------------------------
 ----
 ---- main.lua
 ----
@@ -105,13 +105,24 @@ local function createVirus(params)
     local group = params.group or screen
     local color = params.color or "Red"
     
-    local virus = display.newImageRect( group, "/Images/"..color.."Virus@2x.png", 64, 64 )
+    local virusSize
+    if params.age== 2 then
+        virusSize = 96
+    elseif params.age== 1 then
+        virusSize = 64
+    else
+        virusSize = 32
+    end
+        
+local virus = display.newImageRect( group, "/Images/"..color.."Virus@2x.png", virusSize, virusSize )
  
-
+    virus.age = params.age or 0
     virus.x = params.x or display.contentWidth/2
     virus.y = params.y or display.contentHeight/2
     
     virus.speed = params.speed or 50
+    
+    
     
     function virus.move()
         
@@ -137,6 +148,20 @@ local function createVirus(params)
     
     virus.transition = virus.move()
     
+    function virus.grow()
+        
+        if virus.age<2 then
+            
+            virus.width = virus.width +32
+            virus.height = virus.height +32
+            virus.age = virus.age + 1
+            
+        end
+    end
+    
+    timer.performWithDelay(5000, virus.grow, 2)
+    
+    
     function virus:touch(event)
         
         if event.phase=="ended" then
@@ -152,6 +177,7 @@ local function createVirus(params)
     
     virus:addEventListener("touch", virus)
     
+    
     return virus
 end
 
@@ -161,9 +187,9 @@ local function drawLevel(level)
     
     local virusType = {
         --Define the virus types
-        {["color"]="Blue", ["speed"]=50},
-        {["color"]="Green", ["speed"]=75},
-        {["color"]="Red", ["speed"]=100}
+        {["color"]="Blue", ["speed"]=50, ["age"]=0},
+        {["color"]="Green", ["speed"]=75, ["age"]=2},
+        {["color"]="Red", ["speed"]=100, ["age"]=2}
         
     }
     
