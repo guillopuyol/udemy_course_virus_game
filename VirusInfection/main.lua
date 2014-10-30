@@ -141,12 +141,12 @@ local virus = display.newImageRect( group, "/Images/"..color.."Virus@2x.png", vi
         
         local transitionTime = distance/virus.speed * 1000
  
-        local virusTransition = transition.to( virus, {time=transitionTime, alpha=1, x=targetX, y=targetY, onComplete=virus.move } )
+        virus.transition = transition.to( virus, {time=transitionTime, alpha=1, x=targetX, y=targetY, onComplete=virus.move } )
         
-        return virusTransition
+        
     end
     
-    virus.transition = virus.move()
+    virus.move()
     
     function virus.grow()
         
@@ -159,7 +159,7 @@ local virus = display.newImageRect( group, "/Images/"..color.."Virus@2x.png", vi
         end
     end
     
-    timer.performWithDelay(5000, virus.grow, 2)
+    virus.growTimer = timer.performWithDelay(5000, virus.grow, 2)
     
     
     function virus:touch(event)
@@ -169,6 +169,8 @@ local virus = display.newImageRect( group, "/Images/"..color.."Virus@2x.png", vi
             if virus.age==0 then
                 --die
                 
+                timer.cancel(virus.growTimer)
+                transition.cancel(virus.transition)
                 local event = {name="virusDied", target=virus}
                 virus:dispatchEvent(event)
                 
@@ -222,6 +224,9 @@ local function drawLevel(level)
             local function killOffVirus(event)
                 
                 print("We just heard a virus died!")
+                
+                event.target:removeSelf()
+                event.target = nil
                 
             end
             
