@@ -113,7 +113,6 @@ local function createVirus(params)
     
     virus.speed = params.speed or 50
     
-    
     function virus.move()
         
         local random = math.random
@@ -131,11 +130,27 @@ local function createVirus(params)
         
         local transitionTime = distance/virus.speed * 1000
  
+        local virusTransition = transition.to( virus, {time=transitionTime, alpha=1, x=targetX, y=targetY, onComplete=virus.move } )
         
-        transition.to( virus, {time=transitionTime, alpha=1, x=targetX, y=targetY, onComplete=virus.move } )
+        return virusTransition
     end
     
-    virus.move()
+    virus.transition = virus.move()
+    
+    function virus:touch(event)
+        
+        if event.phase=="ended" then
+            
+            print("Virus Touched!")
+            print("Virus Speed: "..virus.speed)
+            
+        end
+        
+        return true
+    end
+    
+    
+    virus:addEventListener("touch", virus)
     
     return virus
 end
