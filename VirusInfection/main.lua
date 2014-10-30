@@ -27,7 +27,6 @@ virusColony[1]=virus1
 virusColony[2]=virus3
 virusColony[3]=virus2
 virusColony[4]=virus4
-virusColony[5]=87
 
 
 for i=1,#virusColony do
@@ -51,23 +50,29 @@ for i=1,#virusColony do
              print("Virus Age: "..virusColony[i].Life)
 
          until virusColony[i].Life>=32 
+         
     end
 end
 
 
-
-
---Printing Virus Colony
-print(virusColony)
-
-for key,value in pairs(virusColony) do
-    print(key,value)
+function changeVirusSpeed(virus, deltaSpeed)
     
-    if type(value)=="table" then
-        for insideKey,insideValue in pairs(value) do
-            print(insideKey, insideValue)
-        end
-    else
-        print(value)
-    end
+    virus.Speed = virus.Speed + deltaSpeed
+
 end
+
+
+function getVirusSpeed(virus)
+    return virus.Speed
+end
+
+
+
+print("Original Speed: "..virusColony[2].Speed)
+
+changeVirusSpeed(virusColony[2], 40)
+
+print("Original Speed: "..virusColony[2].Speed)
+
+
+print("Virus 3 has a speed of: "..getVirusSpeed(virusColony[3]))
