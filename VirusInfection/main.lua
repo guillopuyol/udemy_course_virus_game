@@ -9,18 +9,17 @@
 
 
 
-
 virusColony = {}
 
+local maxSpeed = 40
 
+virus1 = {["Life"]=1, ["Speed"]=maxSpeed, ["Color"]="Blue", ["InfectFactor"]=3}
 
-virus1 = {["Life"]=1, ["Speed"]=30, ["Color"]="Blue", ["InfectFactor"]=3}
+virus2 = {["Life"]=23, ["Speed"]=maxSpeed, ["Color"]="Yellow", ["InfectFactor"]=1}
 
-virus2 = {["Life"]=23, ["Speed"]=20, ["Color"]="Yellow", ["InfectFactor"]=1}
+virus3 = {["Life"]=13, ["Speed"]=maxSpeed, ["Color"]="Red", ["InfectFactor"]=4}
 
-virus3 = {["Life"]=13, ["Speed"]=25, ["Color"]="Red", ["InfectFactor"]=4}
-
-virus4 = {["Life"]=15, ["Speed"]=32, ["Color"]="Black", ["InfectFactor"]=5}
+virus4 = {["Life"]=15, ["Speed"]=maxSpeed, ["Color"]="Black", ["InfectFactor"]=5}
 
 
 virusColony[1]=virus1
@@ -47,7 +46,7 @@ for i=1,#virusColony do
              end
 
              virusColony[i].Life = virusColony[i].Life + 1
-             print("Virus Age: "..virusColony[i].Life)
+--             print("Virus Age: "..virusColony[i].Life)
 
          until virusColony[i].Life>=32 
          
@@ -57,7 +56,11 @@ end
 
 function changeVirusSpeed(virus, deltaSpeed)
     
+    local maxSpeed = 70
+    
     virus.Speed = virus.Speed + deltaSpeed
+    
+    print("MaxSpeed inside the function: "..maxSpeed)
 
 end
 
@@ -67,10 +70,13 @@ function getVirusSpeed(virus)
 end
 
 
+print("Original MaxSpeed: "..maxSpeed)
 
 print("Original Speed: "..virusColony[2].Speed)
 
 changeVirusSpeed(virusColony[2], 40)
+
+print("MaxSpeed after the function: "..maxSpeed)
 
 print("Original Speed: "..virusColony[2].Speed)
 
