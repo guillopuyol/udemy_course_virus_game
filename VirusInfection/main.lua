@@ -117,14 +117,16 @@ local function createVirus(params)
         virusSize = 32
     end
         
-local virus = display.newImageRect( group, "/Images/"..color.."Virus@2x.png", virusSize, virusSize )
+    local virus = display.newImageRect( group, "/Images/"..color.."Virus@2x.png", virusSize, virusSize )
  
     virus.age = params.age or 0
     virus.x = params.x or display.contentWidth/2
     virus.y = params.y or display.contentHeight/2
     
-    virus.speed = params.speed or 50
+    virus.speed = params.speed or 100
     
+    virus.children = params.children or 2
+    virus.color = color
     
     
     function virus.move()
@@ -179,6 +181,11 @@ local virus = display.newImageRect( group, "/Images/"..color.."Virus@2x.png", vi
                 
             else
                 --spawn new viruses
+                
+                timer.cancel(virus.growTimer)
+                transition.cancel(virus.transition)
+                local event = {name="virusDied", target=virus}
+                virus:dispatchEvent(event)
             end
             
         end
@@ -199,15 +206,15 @@ local function drawLevel(level)
     
     local virusType = {
         --Define the virus types
-        {["color"]="Blue", ["speed"]=50, ["age"]=0},
-        {["color"]="Green", ["speed"]=75, ["age"]=2},
-        {["color"]="Red", ["speed"]=100, ["age"]=2}
+        {["color"]="Blue", ["speed"]=50, ["age"]=2, ["children"]=4},
+        {["color"]="Green", ["speed"]=75, ["age"]=2, ["children"]=3},
+        {["color"]="Red", ["speed"]=100, ["age"]=2, ["children"]=2}
         
     }
     
     local levels ={
         
-        {3,1,2},  --Level1
+        {2,0,0},  --Level1
         {1,1,0},  --Level2
         {1,1,1},  --Level3  
     }
@@ -230,6 +237,8 @@ local function drawLevel(level)
                 print("Before:")
                 for i,j in pairs(virusColony) do print(i,j) end
                 
+                local copyOfVirus = event.target
+                
                 local thisVirusIndex = event.target.index
                 event.target:removeSelf()
                 event.target = nil
@@ -241,6 +250,26 @@ local function drawLevel(level)
                 for i,j in pairs(virusColony) do print(i,j) end
                 
                 gameVars.totalVirusesOnScreen = gameVars.totalVirusesOnScreen -1
+                
+                if copyOfVirus.age > 0 then
+                    for children = 1, copyOfVirus.children do
+
+                        local params = {color=copyOfVirus.color, speed=copyOfVirus.speed, age=copyOfVirus.age-1, children=copyOfVirus.children, x=copyOfVirus.x, y=copyOfVirus.y}
+
+                        local thisVirus = createVirus(params)
+
+                        thisVirus:addEventListener("virusDied", killOffVirus)
+
+                        thisVirus.index = #virusColony + 1
+
+                        gameVars.totalVirusesOnScreen = gameVars.totalVirusesOnScreen + 1
+
+                        table.insert(virusColony, thisVirus )
+
+
+                    end
+                end
+                copyOfVirus = nil
                 
             end
             
