@@ -140,6 +140,42 @@ local function createVirus(params)
     return virus
 end
 
+local function drawLevel(level)
+    
+    local level = level or 1
+    
+    local virusType = {
+        --Define the virus types
+        {["color"]="Blue", ["speed"]=50},
+        {["color"]="Green", ["speed"]=75},
+        {["color"]="Red", ["speed"]=100}
+        
+    }
+    
+    local levels ={
+        
+        {3,1,2},  --Level1
+        {1,1,0},  --Level2
+        {1,1,1},  --Level3  
+    }
+    
+    for virusTypes = 1, 3 do
+        
+        print(levels[level][virusTypes])
+        
+        local virusToSpawn = levels[level][virusTypes]
+        
+        for spawns = 1, virusToSpawn do
+            
+            local params = virusType[virusTypes]
+            
+            table.insert(virusColony, createVirus(params) )
+        end
+        
+    end
+    
+end
+
 
 local function initScreen()
     
@@ -152,11 +188,7 @@ local function initScreen()
     background.x = contentWidth/2
     background.y = contentHeight/2
     
-    local params = {["group"]=screen, ["color"]="Blue", ["x"]=200, ["y"]=70, ["speed"]=50}
-    
-    table.insert(virusColony, createVirus(params) )
-    
-    
+    drawLevel()
     
 end
 
