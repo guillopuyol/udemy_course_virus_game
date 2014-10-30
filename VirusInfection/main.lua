@@ -95,6 +95,9 @@ local screen
 
 local virusColony={}
 
+local gameVars = {}
+
+gameVars.totalVirusesOnScreen = 0
 
 local function createVirus(params)
     
@@ -224,13 +227,28 @@ local function drawLevel(level)
             local function killOffVirus(event)
                 
                 print("We just heard a virus died!")
+                print("Before:")
+                for i,j in pairs(virusColony) do print(i,j) end
                 
+                local thisVirusIndex = event.target.index
                 event.target:removeSelf()
                 event.target = nil
+                
+                virusColony[thisVirusIndex] = nil
+                
+                
+                print("After:")
+                for i,j in pairs(virusColony) do print(i,j) end
+                
+                gameVars.totalVirusesOnScreen = gameVars.totalVirusesOnScreen -1
                 
             end
             
             thisVirus:addEventListener("virusDied", killOffVirus)
+            
+            thisVirus.index = #virusColony + 1
+            
+            gameVars.totalVirusesOnScreen = gameVars.totalVirusesOnScreen + 1
             
             table.insert(virusColony, thisVirus )
         end
