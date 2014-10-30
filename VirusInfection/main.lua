@@ -166,8 +166,15 @@ local virus = display.newImageRect( group, "/Images/"..color.."Virus@2x.png", vi
         
         if event.phase=="ended" then
             
-            print("Virus Touched!")
-            print("Virus Speed: "..virus.speed)
+            if virus.age==0 then
+                --die
+                
+                local event = {name="virusDied", target=virus}
+                virus:dispatchEvent(event)
+                
+            else
+                --spawn new viruses
+            end
             
         end
         
@@ -210,7 +217,17 @@ local function drawLevel(level)
             
             local params = virusType[virusTypes]
             
-            table.insert(virusColony, createVirus(params) )
+            local thisVirus = createVirus(params)
+            
+            local function killOffVirus(event)
+                
+                print("We just heard a virus died!")
+                
+            end
+            
+            thisVirus:addEventListener("virusDied", killOffVirus)
+            
+            table.insert(virusColony, thisVirus )
         end
         
     end
