@@ -91,19 +91,35 @@
 
 
 
-local screen = display.newGroup()
+local screen
+
+local virusColony={}
 
 
-local virus = display.newImageRect( screen, "/Images/RedVirus@2x.png", 64, 64 )
+local function createVirus(group, color)
+    
+    local color = color or "Red"
+    
+    local virus = display.newImageRect( group, "/Images/"..color.."Virus@2x.png", 64, 64 )
  
 
-virus.x = 160
-virus.y = 240
+    virus.x = 160
+    virus.y = 240
+    
+    return virus
+end
 
 
+local function initScreen()
+    
+    screen = display.newGroup()
+    
+    table.insert(virusColony, createVirus(screen) )
+    
+    
+    
+end
 
-local virus2 = display.newImageRect( screen, "/Images/BlueVirus@2x.png", 64, 64 )
- 
+initScreen()
 
-virus.x = 160
-virus.y = 140
+virusColony[1].y = 470
