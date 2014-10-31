@@ -101,8 +101,33 @@ gameVars.totalVirusesOnScreen = 0
 gameVars.maxVirusOnScreen = 20
 gameVars.currentLevel = 1
 
-local function restartGame(level)
-    print("Restarting Level:"..level)
+local drawLevel
+
+local function restartGame(event)
+    
+    if "clicked" == event.action then
+        local i = event.index
+        if 1 == i then  --Retry Button    
+            print("Restarting Level Now")
+            
+            for j = 1, #virusColony do
+                
+                if virusColony[j]~=nil then
+                    
+                    virusColony[j]:removeSelf()
+                    virusColony[j]=nil
+                    
+                end
+                
+            end
+            
+            drawLevel(gameVars.currentLevel)
+            
+        end
+    
+    end
+    
+    
 end
 
 local function endGame(endGameStatus)
@@ -125,7 +150,7 @@ local function endGame(endGameStatus)
             end 
         end
         
-        native.showAlert("Virus Infection", "The infection has spread beyond control", { "Retry" }, restartGame(1) )
+        native.showAlert("Virus Infection", "The infection has spread beyond control", { "Retry" }, restartGame )
         
     end
 end
@@ -242,7 +267,9 @@ local function checkTotalVirus()
 end
 
 
-local function drawLevel(level)
+function drawLevel(level)
+    
+    gameVars.totalVirusesOnScreen = 0
     
     local level = level or 1
     
