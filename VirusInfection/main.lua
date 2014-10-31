@@ -99,6 +99,11 @@ local gameVars = {}
 
 gameVars.totalVirusesOnScreen = 0
 gameVars.maxVirusOnScreen = 20
+gameVars.currentLevel = 1
+
+local function restartGame(level)
+    print("Restarting Level:"..level)
+end
 
 local function endGame(endGameStatus)
     if endGameStatus=="Lost" then
@@ -120,8 +125,7 @@ local function endGame(endGameStatus)
             end 
         end
         
---        virus:stopMoving()
---        virus:stopGrowing()
+        native.showAlert("Virus Infection", "The infection has spread beyond control", { "Retry" }, restartGame(1) )
         
     end
 end
@@ -229,9 +233,11 @@ local function createVirus(params)
 end
 
 local function checkTotalVirus()
+    
     if gameVars.totalVirusesOnScreen>gameVars.maxVirusOnScreen then
         local endGameStatus = "Lost"
         endGame(endGameStatus)
+        return true
     end
 end
 
@@ -302,7 +308,9 @@ local function drawLevel(level)
 
                         table.insert(virusColony, thisVirus )
                         
-                        checkTotalVirus()
+                        if checkTotalVirus()==true then
+                            break
+                        end
 
 
                     end
