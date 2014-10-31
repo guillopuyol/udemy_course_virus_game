@@ -61,7 +61,9 @@ local function restartGame(event)
                 gameVars.currentLevel = gameVars.currentLevel + 1
                 if gameVars.currentLevel > #gameVars.levels then
                     --Show GAME END
-                    print("Game Beat!")
+                    storyboard.gotoScene("endOfGame")
+                    --Game Level reset to 1
+                    gameVars.currentLevel = 1
                 else
                     drawLevel(gameVars.currentLevel)
                 end
@@ -323,6 +325,7 @@ local function initScreen()
     
     screen = display.newGroup()
     
+    
     local contentWidth = display.contentWidth
     local contentHeight = display.contentHeight
     
@@ -335,14 +338,11 @@ local function initScreen()
     bgMusic = audio.loadStream("Sounds/music.wav")
     bgMusicChannel = audio.findFreeChannel()
     
-    audio.play(bgMusic, {channel=bgMusicChannel, loops=-1, fadeIn=3000})
     
     
     --Load Virus Sound
     virusPopSound = audio.loadSound("Sounds/pop.wav")
     virusPopSoundChannel = audio.findFreeChannel()
-    
-    drawLevel()
     
 end
 
@@ -356,7 +356,10 @@ function scene:createScene( event )
         --      Example use-case: Restore 'group' from previously saved state.
 
         -----------------------------------------------------------------------------
-
+        print("Scene was created")
+        initScreen()
+        
+        group:insert(screen)
 end
 
 
@@ -382,7 +385,13 @@ function scene:enterScene( event )
         --      INSERT code here (e.g. start timers, load audio, start listeners, etc.)
 
         -----------------------------------------------------------------------------
-        initScreen()
+        print("We just entered the scene")
+        
+        print("We are drawing the level")
+        drawLevel()
+        
+        audio.play(bgMusic, {channel=bgMusicChannel, loops=-1, fadeIn=3000})
+    
 end
 
 
