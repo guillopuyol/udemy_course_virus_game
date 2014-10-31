@@ -100,6 +100,8 @@ local gameVars = {}
 gameVars.totalVirusesOnScreen = 0
 gameVars.maxVirusOnScreen = 20
 gameVars.currentLevel = 1
+gameVars.currentLevelBeat = false
+gameVars.levels = {}
 
 local drawLevel
 
@@ -121,12 +123,23 @@ local function restartGame(event)
                 
             end
             
-            drawLevel(gameVars.currentLevel)
+            if gameVars.currentLevelBeat == false then
+                drawLevel(gameVars.currentLevel)
+            else
+                gameVars.currentLevel = gameVars.currentLevel + 1
+                if gameVars.currentLevel > #gameVars.levels then
+                    --Show GAME END
+                    print("Game Beat!")
+                else
+                    drawLevel(gameVars.currentLevel)
+                end
+                
+            end
             
         end
     
     end
-    
+    gameVars.currentLevelBeat = false
     
 end
 
@@ -149,9 +162,12 @@ local function endGame(endGameStatus)
                 thisVirus:stopRespondingToTouch()
             end 
         end
-        
+        gameVars.currentLevelBeat = false
         native.showAlert("Virus Infection", "The infection has spread beyond control", { "Retry" }, restartGame )
         
+    elseif endGameStatus=="Won" then
+        gameVars.currentLevelBeat = true
+        native.showAlert("Virus Infection", "Congratulations! You cleared the infection.", { "Continue" }, restartGame )
     end
 end
 
@@ -263,6 +279,10 @@ local function checkTotalVirus()
         local endGameStatus = "Lost"
         endGame(endGameStatus)
         return true
+    elseif gameVars.totalVirusesOnScreen==0 then
+        local endGameStatus = "Won"
+        endGame(endGameStatus)
+        return true
     end
 end
 
@@ -275,24 +295,24 @@ function drawLevel(level)
     
     local virusType = {
         --Define the virus types
-        {["color"]="Blue", ["speed"]=50, ["age"]=2, ["children"]=4},
-        {["color"]="Green", ["speed"]=75, ["age"]=2, ["children"]=3},
+        {["color"]="Blue", ["speed"]=50, ["age"]=2, ["children"]=2},
+        {["color"]="Green", ["speed"]=75, ["age"]=2, ["children"]=2},
         {["color"]="Red", ["speed"]=100, ["age"]=2, ["children"]=2}
         
     }
     
-    local levels ={
+    gameVars.levels ={
         
-        {2,0,0},  --Level1
-        {1,1,0},  --Level2
-        {1,1,1},  --Level3  
+        {0,0,1},  --Level1
+        {0,1,0},  --Level2
+        {1,0,0},  --Level3  
     }
     
     for virusTypes = 1, 3 do
         
 --        print(levels[level][virusTypes])
         
-        local virusToSpawn = levels[level][virusTypes]
+        local virusToSpawn = gameVars.levels[level][virusTypes]
         
         for spawns = 1, virusToSpawn do
             
@@ -341,6 +361,8 @@ function drawLevel(level)
 
 
                     end
+                else
+                    checkTotalVirus()
                 end
                 copyOfVirus = nil
                 
